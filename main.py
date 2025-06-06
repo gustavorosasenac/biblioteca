@@ -60,16 +60,43 @@ def cadastrar_livro():
         print("Livro adicionado com sucesso")
 
 def listar_livros():
-    pass
+    livros = session.query(Livro).all()
+    if not livros:
+        print("Nenhum livro cadastrado.")
+    else:
+        for livro in livros:
+            print(f"ID: {livro.id}, Título: {livro.titulo}, Autor: {livro.autor}")
 
 def excluir_livro():
-    pass
+    id_livro = int(input("Digite o ID do livro que deseja excluir: "))
+    livro = session.query(Livro).filter(Livro.id == id_livro).first()
+    if livro:
+        session.delete(livro)
+        session.commit()
+        print("Livro excluído com sucesso!")
+    else:
+        print("Livro não encontrado.")
 
 def atualizar_livro():
-    pass
+    id_livro = int(input("Digite o ID do livro que deseja atualizar: "))
+    livro = session.query(Livro).filter(Livro.id == id_livro).first()
+    if livro:
+        novo_titulo = input("Digite o novo título: ")
+        novo_autor = input("Digite o novo autor: ")
+        livro.titulo = novo_titulo
+        livro.autor = novo_autor
+        session.commit()
+        print("Livro atualizado com sucesso!")
+    else:
+        print("Livro não encontrado.")
 
 def buscar_livro():
-    pass
+    titulo_livro = input("Digite o título do livro que deseja buscar: ")
+    livro = session.query(Livro).filter(Livro.titulo == titulo_livro).first()
+    if livro:
+        print(f"ID: {livro.id}, Título: {livro.titulo}, Autor: {livro.autor}")
+    else:
+        print("Livro não encontrado.")
     
 
 while True:
@@ -87,34 +114,40 @@ while True:
         "0 - Sair do programa\n"
         )
     
-    opcao = (int(input("Digite a opção desejada: ")))
-
+    opcao = (input("Digite a opção desejada: "))
+    if opcao == "":
+        print("Opção inválida. Tente novamente.")
+        continue
+    
     match opcao:
-        case 1:
+    
+        case "1":
             cadastrar_usuario()
-        case 2:
+        case "2":
             listar_usuarios()
-        case 3:
+        case "3":
             excluir_usuario()
-        case 4:
+        case "4":
             atualizar_usuario()
-        case 5:
+        case "5":
             buscar_usuario()
-        case 6:
+        case "6":
             cadastrar_livro()
-        case 7:
+        case "7":
             listar_livros()
-        case 8:
+        case "8":
             excluir_livro()
-        case 9:
+        case "9":
             atualizar_livro()
-        case 10:
+        case "10":
             buscar_livro()
-        case 0:
+        case "0":
             print("Saindo do programa...")
             break
         case _:
-            print("Opção inválida, tente novamente.")
+            print("Opção inválida. Tente novamente.")
+        
+
 
 
 
