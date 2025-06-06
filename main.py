@@ -1,6 +1,9 @@
 from DB.config import engine, Base, session
 from Models.usuario import Usuario
 from Models.livro import Livro
+from Models.emprestimo import Emprestimo
+from sqlalchemy import DateTime
+from datetime import datetime
 
 Base.metadata.create_all(engine)
 
@@ -52,7 +55,7 @@ def buscar_usuario():
         print("Usuário não encontrado.")
 
 def cadastrar_livro():
-        titulo = input("Digite O nome do livro: "), 
+        titulo = input("Digite o nome do livro: "), 
         autor = input("Digite o nome do autor: ")
         novo_livro = Livro(titulo=titulo, autor=autor)
         session.add(novo_livro)  
@@ -97,7 +100,45 @@ def buscar_livro():
         print(f"ID: {livro.id}, Título: {livro.titulo}, Autor: {livro.autor}")
     else:
         print("Livro não encontrado.")
+
+def cadastrar_emprestimo():
+    nome_usuario = input("Digite o nome do usuario: ")
+    nome_livro = input("Digite o nome do livro que será emprestado: ")
+    data_emprestimo = DateTime
+    usuario = session.query(Usuario).filter(Usuario.nome == nome_usuario).first()
+    if not usuario:
+        print("Usuario não encontrado")
+        return
+    livro = session.query(Livro).filter(Livro.titulo == nome_livro).first()
+    if not livro:
+        print("Livro não encontrado")
+        return
+    novo_emprestimo = Emprestimo(
+        usuario_id=usuario.id, livro_id=livro.id, data_emprestimo=datetime.now()
+    )
+    session.add(novo_emprestimo)
+    session.commit()
+    print("Emprestimo cadastrado com sucesso")
+
+def listar_emprestimos():
+    emprestimos = session.query(Emprestimo).all()
     
+    if not Emprestimo:
+        print("Nenhum emprestimo cadastrado")
+    else:
+        for emprestimo in emprestimos:
+            print(f"ID: {emprestimo.id}, Nome do usuario:{}, Nome do livro emprestado:{}, Data do emprestimo:{}, Devolucao do emprestimo:{} ")
+def excluir_emprestimo():
+    pass
+
+def checar_emprestimo_usuario():
+    pass
+
+def cadastrar_data_devolucao():
+    pass
+
+
+
 
 while True:
     print("\nMenu de Opções:")
@@ -111,6 +152,11 @@ while True:
         "8 - Excluir livro\n"
         "9 - Atualizar livro\n"
         "10 - Buscar livro\n"
+        "11 - Cadastrar novo emprestimo\n"
+        "12 - Verificar todos os emprestimo\n"
+        "13 - Excluir um emprestimo\n"
+        "14 - Editar um emprestimo\n"
+        "15 - Devolução de emprestimo\n"
         "0 - Sair do programa\n"
         )
     
@@ -118,7 +164,7 @@ while True:
     if opcao == "":
         print("Opção inválida. Tente novamente.")
         continue
-    
+
     match opcao:
     
         case "1":
@@ -141,6 +187,8 @@ while True:
             atualizar_livro()
         case "10":
             buscar_livro()
+        case "11":
+            cadastrar_emprestimo()
         case "0":
             print("Saindo do programa...")
             break
