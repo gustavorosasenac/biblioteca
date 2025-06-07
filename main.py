@@ -194,6 +194,8 @@ while True:
             break
         case _:
             print("Opção inválida. Tente novamente.")
+
+            aaa
         
 
 
