@@ -29,7 +29,6 @@ def excluir_usuario():
     verificar_emprestimo = session.query(Emprestimo).filter(Emprestimo.usuario_id == id_usuario).first()
     if verificar_emprestimo:
         print("Esse usuario ainda possui um emprestimo cadastrado!")
-    
     elif usuario:
         session.delete(usuario)
         session.commit()
@@ -77,7 +76,10 @@ def listar_livros():
 def excluir_livro():
     id_livro = input("Digite o ID do livro que deseja excluir: ")
     livro = session.query(Livro).filter(Livro.id == id_livro).first()
-    if livro:
+    verificar_emprestimo = session.query(Emprestimo).filter(Emprestimo.livro_id == id_livro).first()
+    if verificar_emprestimo:
+        print("Este livro está cadastrado em um emprestimo")
+    elif livro:
         session.delete(livro)
         session.commit()
         print("Livro excluído com sucesso!")
