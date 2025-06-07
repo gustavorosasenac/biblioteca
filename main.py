@@ -208,14 +208,19 @@ while True:
             buscar_livro()
         case "11":
             cadastrar_emprestimo()
+        case "12":
+            listar_emprestimos()
+        case "13":
+            excluir_emprestimo()
+        case "14":
+            checar_emprestimo_usuario()
         case "0":
             print("Saindo do programa...")
             break
         case _:
             print("Opção inválida. Tente novamente.")
 
-            aaa
-        
+                    
 
 
 
