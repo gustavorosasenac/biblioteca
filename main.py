@@ -2,7 +2,6 @@ from DB.config import engine, Base, session
 from Models.usuario import Usuario
 from Models.livro import Livro
 from Models.emprestimo import Emprestimo
-from sqlalchemy import DateTime
 from datetime import datetime
 
 Base.metadata.create_all(engine)
