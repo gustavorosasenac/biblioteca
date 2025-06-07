@@ -7,4 +7,4 @@ class Emprestimo(Base):
     usuario_id = Column(ForeignKey("usuarios.id"))
     livro_id = Column(ForeignKey("livros.id"))
     data_emprestimo = Column(DateTime)
-    #data_devolucao = Column(DateTime,nullable=True)
+    data_devolucao = Column(DateTime, nullable=True)
