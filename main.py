@@ -26,7 +26,11 @@ def listar_usuarios():
 def excluir_usuario():
     id_usuario = input("Digite o ID do usuário a ser excluído: ")
     usuario = session.query(Usuario).filter(Usuario.id == id_usuario).first()
-    if usuario:
+    verificar_emprestimo = session.query(Emprestimo).filter(Emprestimo.usuario_id == id_usuario).first()
+    if verificar_emprestimo:
+        print("Esse usuario ainda possui um emprestimo cadastrado!")
+    
+    elif usuario:
         session.delete(usuario)
         session.commit()
         print("Usuário excluído com sucesso!")
