@@ -24,7 +24,7 @@ def listar_usuarios():
             print(f"ID: {usuario.id}, Nome: {usuario.nome}, Email: {usuario.email}")
 
 def excluir_usuario():
-    id_usuario = int(input("Digite o ID do usuário a ser excluído: "))
+    id_usuario = input("Digite o ID do usuário a ser excluído: ")
     usuario = session.query(Usuario).filter(Usuario.id == id_usuario).first()
     if usuario:
         session.delete(usuario)
@@ -34,7 +34,7 @@ def excluir_usuario():
         print("Usuário não encontrado.")
 
 def atualizar_usuario():
-    id_usuario = int(input("Digite o ID do usuário a ser atualizado: "))
+    id_usuario = input("Digite o ID do usuário a ser atualizado: ")
     usuario = session.query(Usuario).filter(Usuario.id == id_usuario).first()
     if usuario:
         novo_nome = input("Digite o novo nome: ")
@@ -71,7 +71,7 @@ def listar_livros():
             print(f"ID: {livro.id}, Título: {livro.titulo}, Autor: {livro.autor}")
 
 def excluir_livro():
-    id_livro = int(input("Digite o ID do livro que deseja excluir: "))
+    id_livro = input("Digite o ID do livro que deseja excluir: ")
     livro = session.query(Livro).filter(Livro.id == id_livro).first()
     if livro:
         session.delete(livro)
@@ -81,7 +81,7 @@ def excluir_livro():
         print("Livro não encontrado.")
 
 def atualizar_livro():
-    id_livro = int(input("Digite o ID do livro que deseja atualizar: "))
+    id_livro = input("Digite o ID do livro que deseja atualizar: ")
     livro = session.query(Livro).filter(Livro.id == id_livro).first()
     if livro:
         novo_titulo = input("Digite o novo título: ")
@@ -113,25 +113,22 @@ def cadastrar_emprestimo():
         print("Livro não encontrado")
         return
     novo_emprestimo = Emprestimo(
-        usuario_id=usuario.id, livro_id=livro.id, data_emprestimo=datetime.now(), data_devolucao =None
-    )
+        usuario_id=usuario.id, livro_id=livro.id, data_emprestimo=datetime.now(), data_devolucao = None)
     session.add(novo_emprestimo)
     session.commit()
     print("Emprestimo cadastrado com sucesso")
 
 def listar_emprestimos():
-    
     resultado = (session.query(Emprestimo.id, Usuario.nome, Livro.titulo, Emprestimo.data_emprestimo, Emprestimo.data_devolucao).join(Emprestimo, Usuario.id == Emprestimo.usuario_id).join(Livro, Livro.id == Emprestimo.livro_id).all())
-    
-    if not Emprestimo:
+    if not resultado:
         print("Nenhum emprestimo cadastrado")
     else:
         for id, nome, titulo, data_emprestimo, data_devolucao in resultado:
             devolucao = "Não devolvido" if data_devolucao is None else data_devolucao
-            print (f'ID: {id} , Nome do usuario: "{nome}", Nome do livro emprestado: "{titulo}", Data do emprestimo: "{data_emprestimo}", Devolucao do emprestimo: {devolucao} ')
+            print (f'ID: {id} , Nome do usuario: "{nome}", Nome do livro emprestado: "{titulo}", Data do emprestimo: "{data_emprestimo}", Devolucao do emprestimo: {devolucao}')
         
 def excluir_emprestimo():
-    id_emprestimo = int(input("Digite o ID do emprestimo que deseja excluir: "))
+    id_emprestimo = input("Digite o ID do emprestimo que deseja excluir: ")
     emprestimo = session.query(Emprestimo).filter(Emprestimo.id == id_emprestimo).first()
     if emprestimo:
         session.delete(emprestimo)
@@ -148,13 +145,16 @@ def checar_emprestimo_usuario():
         Emprestimo.id, Usuario.nome, Livro.titulo, Emprestimo.data_emprestimo).join(
         Emprestimo, Usuario.id == Emprestimo.usuario_id).join(
         Livro, Livro.id == Emprestimo.livro_id).all()
+    
     if usuario == emprestimo:
         for emprestimos in emprestimo:
             print(f"ID:{Emprestimo.id}, Nome:{Usuario.nome}, Livro: {Livro.titulo}, Data do emprestimo:{Emprestimo.data_emprestimo}")
+    else:
+        print("Não encontrado emprestimos para esse usuario")
     
 
 def cadastrar_data_devolucao():
-    id = int(input("Digite o ID do emprestimo que deseja finalizar"))
+    id = input("Digite o ID do emprestimo que deseja finalizar")
     emprestimo = session.query(Emprestimo).filter(Emprestimo.id == id).first()
     if emprestimo:
         data_devolucao = datetime.now()
@@ -162,28 +162,28 @@ def cadastrar_data_devolucao():
         session.commit()
         print("Emprestimo finalizado com sucesso")
     else:
-        print("Livro não encontrado")
+        print("Emprestimo não encontrado")
 
 
 
 while True:
     print("\nMenu de Opções:")
-    print("1 - Cadastrar novo Usuario\n"
+    print("\n1 - Cadastrar novo usuario\n"
         "2 - Listar usuarios\n"
         "3 - Excluir usuario\n"
         "4 - Atualizar usuario\n"
         "5 - Buscar usuario\n"
-        "6 - Cadastrar novo Livro\n"
+        "\n6 - Cadastrar novo livro\n"
         "7 - Listar livros\n"
         "8 - Excluir livro\n"
         "9 - Atualizar livro\n"
         "10 - Buscar livro\n"
-        "11 - Cadastrar novo emprestimo\n"
+        "\n11 - Cadastrar novo emprestimo\n"
         "12 - Verificar todos os emprestimo\n"
         "13 - Excluir um emprestimo\n"
-        "14 - Editar um emprestimo\n"
+        "14 - Chegar emprestimo por usuario\n"
         "15 - Devolução de emprestimo\n"
-        "0 - Sair do programa\n"
+        "\n0 - Sair do programa\n"
         )
     
     opcao = (input("Digite a opção desejada: "))
