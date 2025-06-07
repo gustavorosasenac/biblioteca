@@ -121,18 +121,37 @@ def cadastrar_emprestimo():
     print("Emprestimo cadastrado com sucesso")
 
 def listar_emprestimos():
-    emprestimos = session.query(Emprestimo).all()
+    
+    resultado = session.query(Emprestimo.id, Usuario.nome, Livro.titulo, Emprestimo.data_emprestimo).join(Emprestimo, Usuario.id == Emprestimo.usuario_id).join(Livro, Livro.id == Emprestimo.livro_id).all()
     
     if not Emprestimo:
         print("Nenhum emprestimo cadastrado")
     else:
-        for emprestimo in emprestimos:
-            print(f"ID: {emprestimo.id}, Nome do usuario:{}, Nome do livro emprestado:{}, Data do emprestimo:{}, Devolucao do emprestimo:{} ")
+        for nome, titulo, data_emprestimo in resultado:
+            print (f'ID: {Emprestimo.id}, Nome do usuario:{nome}, Nome do livro emprestado:{titulo}, Data do emprestimo:{data_emprestimo}, Devolucao do emprestimo: ')
+        
 def excluir_emprestimo():
-    pass
+    id_emprestimo = int(input("Digite o ID do emprestimo que deseja excluir: "))
+    emprestimo = session.query(Emprestimo).filter(Emprestimo.id == id_emprestimo).first()
+    if emprestimo:
+        session.delete(emprestimo)
+        session.commit()
+        print("Emprestimo excluido com sucesso")
+    else:
+        print("Emprestimo não encontrado")
 
 def checar_emprestimo_usuario():
-    pass
+    nome = input("Digite o nome do usuario que deseja ver os emprestimos: ")
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+
+    emprestimo = session.query(
+        Emprestimo.id, Usuario.nome, Livro.titulo, Emprestimo.data_emprestimo).join(
+        Emprestimo, Usuario.id == Emprestimo.usuario_id).join(
+        Livro, Livro.id == Emprestimo.livro_id).all()
+    if usuario == emprestimo:
+        for emprestimos in emprestimo:
+            print(f"ID:{Emprestimo.id}, Nome:{Usuario.nome}, Livro: {Livro.titulo}, Data do emprestimo:{Emprestimo.data_emprestimo}")
+    
 
 def cadastrar_data_devolucao():
     pass
