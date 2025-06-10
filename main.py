@@ -57,7 +57,7 @@ def buscar_usuario():
         print("Usuário não encontrado.")
 
 def cadastrar_livro():
-        titulo = input("Digite o nome do livro: "), 
+        titulo = input("Digite o nome do livro: ")
         autor = input("Digite o nome do autor: ")
         novo_livro = Livro(titulo=titulo, autor=autor)
         session.add(novo_livro)  
